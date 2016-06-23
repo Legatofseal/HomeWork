@@ -18,6 +18,7 @@ public class Controller {
     public ConnectionsCollection getContainer() {
         return container;
     }
+
     class DeleteOldConn extends TimerTask {
         ConnectionKey connectionKey;
 
@@ -32,13 +33,15 @@ public class Controller {
 
         }
     }
-    public void stopConn (ConnectionKey connectionKey){
+
+    public void stopConn(ConnectionKey connectionKey) {
         Timer timer = new Timer();
         timer.schedule(new DeleteOldConn(connectionKey), 3600000);
     }
-    public void handleEvent (Event event){
-        if (event.getEventType()){
-            if (container.getExtConnDataLinkedHashMap().get(event.getExtConnData().getConKey())!=null){
+
+    public void handleEvent(Event event) {
+        if (event.getEventType().equals(Event.type.Start)) {
+            if (container.getExtConnDataLinkedHashMap().get(event.getExtConnData().getConKey()) != null) {
                 container.deleteExtConnByKey(event.getExtConnData().getConKey());
                 threadLinkedHashMap.get(event.getExtConnData().getConKey()).interrupt();
 
@@ -47,25 +50,30 @@ public class Controller {
                 threadLinkedHashMap.put(event.getExtConnData().getConKey(), eventThr);
                 stopConn(event.getExtConnData().getConKey());
 
-            }
-            else {
+            } else {
                 container.addExtConnData(event.getExtConnData());
                 Thread eventThr = new Thread(event);
                 threadLinkedHashMap.put(event.getExtConnData().getConKey(), eventThr);
                 stopConn(event.getExtConnData().getConKey());
             }
-        }
-        else {
-            if (container.getExtConnDataLinkedHashMap().get(event.getExtConnData().getConKey())!=null){
+        } else {
+            if (container.getExtConnDataLinkedHashMap().get(event.getExtConnData().getConKey()) != null) {
                 container.deleteExtConnByKey(event.getExtConnData().getConKey());
                 threadLinkedHashMap.get(event.getExtConnData().getConKey()).interrupt();
             }
-           
+
 
         }
     }
-    public void putEvent (Event event){
-        if(threadLinkedHashMap.size()<30000000){
+
+    public void putEvent(Event event) {
+        if (event.getEventType().equals( Event.type.Start)) {
+            if (threadLinkedHashMap.size() > 30000000) {
+                container.deleteOldest();
+                handleEvent(event);
+            }
+        }
+        else {
             handleEvent(event);
         }
     }

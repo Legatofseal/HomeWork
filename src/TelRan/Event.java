@@ -4,23 +4,24 @@ package TelRan;
  * Created by Legat on 6/22/2016.
  */
 public class Event implements Runnable{
-    boolean eventType; //true for Start, false for End
+    type eventType; //true for Start, false for End
     ExtConnData extConnData;
 
 
-    public Event(boolean eventType, ExtConnData extConnData) {
+    public Event(type eventType, ExtConnData extConnData) {
         this.eventType = eventType;
         this.extConnData = extConnData;
 
     }
 
-    public boolean getEventType() {
+    public type getEventType() {
         return eventType;
     }
 
     public ExtConnData getExtConnData() {
         return extConnData;
     }
+    enum type {Start, End}
 
     @Override
     public void run() {

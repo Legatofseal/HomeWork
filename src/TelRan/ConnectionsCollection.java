@@ -32,5 +32,9 @@ public class ConnectionsCollection {
         extConnDataLinkedHashMap.remove(connectionKey);
 
     }
+    synchronized public void deleteOldest(){
+        Iterator<ExtConnData> it = extConnDataLinkedHashMap.values().iterator();
+        extConnDataLinkedHashMap.remove(it.next().getConKey());
+    }
 
 }

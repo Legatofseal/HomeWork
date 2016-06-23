@@ -6,19 +6,18 @@ package TelRan;
 public class ConnectionKey {
     String destination;
     String source;
-    String port;
-    String proto;
 
-    public ConnectionKey(String destination, String source, String port, String proto) {
+
+    public ConnectionKey(String destination, String source) {
         this.destination = destination;
         this.source = source;
-        this.port = port;
-        this.proto = proto;
+
     }
 
     public String getDestination() {
         return destination;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -28,9 +27,7 @@ public class ConnectionKey {
         ConnectionKey that = (ConnectionKey) o;
 
         if (!getDestination().equals(that.getDestination())) return false;
-        if (!getSource().equals(that.getSource())) return false;
-        if (!getPort().equals(that.getPort())) return false;
-        return getProto().equals(that.getProto());
+        return getSource().equals(that.getSource());
 
     }
 
@@ -38,20 +35,13 @@ public class ConnectionKey {
     public int hashCode() {
         int result = getDestination().hashCode();
         result = 31 * result + getSource().hashCode();
-        result = 31 * result + getPort().hashCode();
-        result = 31 * result + getProto().hashCode();
         return result;
     }
 
     public String getSource() {
         return source;
+
     }
 
-    public String getPort() {
-        return port;
-    }
 
-    public String getProto() {
-        return proto;
-    }
 }
